@@ -53,7 +53,6 @@ render() {
   
     return(
         <div className="container">
-        <img src ="../images/bg.jpg" />
         <div className="row">
           <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div className="card card-signin my-5">
