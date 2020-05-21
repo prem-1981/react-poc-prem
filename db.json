@@ -1,0 +1,40 @@
+{
+   "product-image":[
+    "https://images.pexels.com/photos/291762/pexels-photo-291762.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+    "https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+   ],
+   "product-title": "",
+    "product-details": "",
+    "product-price": "",
+    "product-color": [
+      "red",
+      "blue",
+      "green",
+      "yellow",
+      "pink",
+      "violet",
+      "grey",
+      "black",
+      "maroon",
+      "cherry"
+    ],
+    "product-size": [
+      "XS",
+      "S",
+      "M",
+      "XL",
+      "XXL",
+      "XXXL",
+      {"size-availability":["yes","No","comingsoon"]}
+    ],
+    "product-brand": [
+      "Peter England",
+      "turbo",
+      "Denim",
+      "soch",
+      "Vanhuesen"
+    ],
+    "product-offer": "",
+    "product-availability": ["yes","No","comingsoon"]
+  
+  }
