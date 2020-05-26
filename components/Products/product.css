@@ -1,0 +1,8 @@
+ul.productInfo{
+    display:inline-block;
+    
+}
+
+.productInfo ul li {
+float: left;
+}
