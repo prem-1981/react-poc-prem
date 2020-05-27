@@ -118,6 +118,7 @@ class App extends React.Component {
                                                         "color": "red",
     
                                                         "brand": "Vanhuesen",
+                                                        "price":2500,
     
                                                         "inStock": true
     
@@ -135,6 +136,7 @@ class App extends React.Component {
                                           "color": "green",
 
                                           "brand": "peterEngland",
+                                          "price":1500,
 
                                           "inStock": true
 
@@ -203,8 +205,8 @@ class App extends React.Component {
     
     
     
-    }
-    
+    },
+    //productDetails:[] 
     
     }
 
@@ -215,8 +217,16 @@ class App extends React.Component {
     this.setState({
       user:true
     })
-   console.log("...." + this.state.user)
+   //console.log("...." + this.state.user)
   }
+  // updateProdDetails = (items) => {
+  //   return () => {
+  //     this.setState({
+  //       productdetails:items
+  //      });
+  //   }  
+    
+  // }
 
   
 // componentDidMount(){
@@ -238,9 +248,17 @@ class App extends React.Component {
   //   })
   //  console.log("...." + this.state.user)
   // }
+  
+  getData = (item)=> {
+   this.setState({productDetails: item});     
+}
+
+
   render(){
 
     const { productItems,user } = this.state;
+    const customProps = this.props;
+    console.log(this.state.productDetails)
    
     return (
       <Router>
@@ -283,22 +301,18 @@ class App extends React.Component {
               exact
               path={"/productlist/:category"} 
               render={props => (
-                <ProductList productItemData={productItems}  {...props} 
+                <ProductList sendData={this.getData}  productItemData={productItems}  {...props} 
                 />
               )}
             />
           
-          <Route exact   path={"/productlist/:category/productdetails/:id"}   
+          <Route exact   path={"/productdetails/:id"}   
           render={props => (
-          <ProductDetails    {...props} />
-        )} />
+          <ProductDetails   sendData={this.state.productDetails} {...props}  />
+          )} />
 
 
-            {/* <ProtectedRoute exact path='/landing'
-            render={props => (
-              <LandingPage user={this.state.user.toString()}    {...props} 
-              />
-            )} /> */}
+          
 
         </Switch>
       </div>

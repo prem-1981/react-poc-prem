@@ -9,15 +9,21 @@ import {
 class ProductList extends React.Component {
 constructor(props) {
     super(props)
+   
     }
 
 componentDidMount() {
+//console.log(this.props.productItemData.filter.section)
+}
 
+buttonClick = (item) => {
+    this.props.sendData(item);
+    this.props.history.push("/productdetails/1");
 }
 
 render(){
 const  {productItemData, location} = this.props
-console.log(productItemData)
+
 const productFilter = productItemData.filter.section;
 const mensListItem = productFilter.Men;
 const mensCategory = mensListItem.map((item, index) => 
@@ -27,7 +33,8 @@ const mensCategory = mensListItem.map((item, index) =>
     <li> {item.size} </li>
     <li> {item.color} </li>
     <li> {item.brand} </li>
-    <Link to="/productlist/mens/productdetails/1" className="btn btn-primary" > View </Link> 
+    <li> <b> INR </b> {item.price} </li>
+    <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-primary" > View  </button> 
 </ul>
     )
 
