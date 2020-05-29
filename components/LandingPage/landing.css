@@ -1,0 +1,40 @@
+.landing {
+    background: #efefef url("https://colorlib.com/preview/theme/fashi/img/hero-1.jpg") no-repeat fixed center;
+    width:100%;
+    height:100%
+}  
+
+.single-banner {
+    position: relative;
+    z-index: 1;
+}
+.single-banner .inner-text h4 {
+    color: #252525;
+    font-weight: 700;
+    padding: 11px 28px;
+    background: #ffffff;
+    border-radius: 2px;
+}
+.single-banner .inner-text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 100%;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 100%;
+}
+.single-banner img {
+    min-width: 100%;
+}
+
+.banner-section {
+    
+}

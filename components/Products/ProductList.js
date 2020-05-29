@@ -42,21 +42,11 @@ constructor(props) {
        }
 
 buttonClick = (item) => {
-// this.setState({
-//     showing: true,
-//     productData:[{
-//         id:item.id,
-//         title:item.title,
-//         imgUrl:item.imgUrl,
-//         size:item.size,
-//         price:item.price,
-//         brand:item.brand,
-//         color:item.color,
-//         instock:item.instock
-        
-//     }]
-// })
-
+ const itemID = item.id;
+ const url = "/productdetails"
+ this.props.history.push(`${url}/${itemID}`);
+ console.log(itemID)
+ 
 }
 
 render(){
@@ -143,7 +133,8 @@ const { mensData , womensData, kidsData} = this.state;
                 <li> {item.brand} </li>
             <li> {item.instock}</li>
             <li> <b> INR </b> {item.price} </li>
-                <button  className="btn btn-primary" > View  </button> 
+            <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-primary" > View  </button> 
+                
             </ul>
             ): params === "womens" ? womensData.map((item,index) =>
             <ul className="productInfo" key={index}>
@@ -154,7 +145,7 @@ const { mensData , womensData, kidsData} = this.state;
                 <li> {item.brand} </li>
             <li> {item.instock}</li>
             <li> <b> INR </b> {item.price} </li>
-                <button  className="btn btn-primary" > View  </button> 
+                <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-primary" > View  </button> 
             </ul>
             ): params === "kids" ? kidsData.map((item,index) =>
             <ul className="productInfo" key={index}>
@@ -165,7 +156,7 @@ const { mensData , womensData, kidsData} = this.state;
                 <li> {item.brand} </li>
             <li> {item.instock}</li>
             <li> <b> INR </b> {item.price} </li>
-                <button  className="btn btn-primary" > View  </button> 
+                <button onClick={(e)=> {this.buttonClick(item)}}  className="btn btn-primary" > View  </button> 
             </ul>
             ) : "No category"
         }
