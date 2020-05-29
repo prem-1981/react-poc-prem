@@ -9,7 +9,7 @@ import {
   Link,Redirect
 } from "react-router-dom";
 
-class Header extends React.Component{
+class Login extends React.Component{
 constructor(props){
     super(props);
     this.state = {
@@ -36,8 +36,20 @@ handleSubmit = (e)=> {
   if(!(username && password)){
     return;
   }
-  if(username==='shop' && password==='shop'){
-    console.log("======" + this.props.user)
+
+  fetch('https://api.jsonbin.io/b/5ecfb59360775a568583944f',{
+    headers : { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'secret-key':'$2b$10$vKIGuXyJhe4zGQjE8LQGhuqOGLKo6Nog6NoM1DF3BQPOUmRGLI6Zq'
+     },
+  })
+  .then(response => {
+    return response.json()
+  } )     
+  .then(data =>{ 
+  console.log('success', data)
+  if(username === data.username && password === data.password){
     this.props.handleLogin();
       setTimeout(() => {
         this.props.history.push("/landing");
@@ -49,6 +61,9 @@ handleSubmit = (e)=> {
     console.log(this.errorMessages)
     return
   }
+     
+  })
+ 
 }
 
 render() {
@@ -59,9 +74,16 @@ render() {
 //   <span class="sr-only">Loading...</span>
 // </div>) 
     return(
-        <div className="container">
+        <div className="container-fluid containerBg">
         <div className="row">
-          <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div className="col-5">
+          <br/>
+          <br/>
+         
+        <h1>Fashion friday</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+incididunt ut labore et dolore</p>
+          
             <div className="card card-signin my-5">
               <div className="card-body">
                 <h5 className="card-title text-center">Sign In</h5>
@@ -120,4 +142,4 @@ render() {
 
 };
 
-export default Header;
+export default Login;

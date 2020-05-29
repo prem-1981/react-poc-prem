@@ -4,11 +4,13 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect, NavLink
 } from "react-router-dom";
 import Login  from './components/Login/Login';
 import LandingPage from './components/LandingPage/LandingPage';
 import ProductList from './components/Products/ProductList';
+import Logout from './components/Login/Logout'
 import ProductDetails from './components/Products/ProductDetails';
 import productJSON from './components/Products/product' 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,200 +18,9 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      user:false,
-      productItems:{
-
-        "filter": {
-    
-                        "product-color": {
-    
-                                        "title": "Color",
-    
-                                        "filter": [
-    
-                                                        "red",
-    
-                                                        "blue",
-    
-                                                        "green",
-    
-                                                        "yellow",
-    
-                                                        "pink",
-    
-                                                        "violet",
-    
-                                                        "grey",
-    
-                                                        "black",
-    
-                                                        "maroon",
-    
-                                                        "cherry",
-    
-                                                        "multy"
-    
-                                        ]
-    
-                        },
-    
-                        "product-size": {
-    
-                                        "title": "Size",
-    
-                                        "filter": [
-    
-                                                        "XS",
-    
-                                                        "S",
-    
-                                                        "M",
-    
-                                                        "L",
-    
-                                                        "XL",
-    
-                                                        "XXL",
-    
-                                                        "XXXL"
-    
-    
-    
-                                        ]
-    
-                        },
-    
-                        "size-availability": ["yes", "No", "comingsoon"],
-    
-                        "product-brand": {
-    
-                                        "title": "Brand",
-    
-                                        "filter": [
-    
-                                                        "Peter England",
-    
-                                                        "turbo",
-    
-                                                        "Denim",
-    
-                                                        "soch",
-    
-                                                        "Vanhuesen"
-    
-                                        ],
-    
-                                        "excludeoutOfStock": "check if we add this feature or not"
-    
-                        },
-    
-                        "section": {
-    
-                                        "Men": [{
-    
-                                                        "title": "Polo Shirts for men",
-    
-                                                        "imgUrl": "https://bestjquery.com/tutorial/product-grid/demo9/images/img-7.jpg",
-    
-                                                        "id": 1,
-    
-                                                        "size": "L",
-    
-                                                        "color": "red",
-    
-                                                        "brand": "Vanhuesen",
-                                                        "price":2500,
-    
-                                                        "inStock": true
-    
-                                        },
-                                        {
-    
-                                          "title": "Rounded Neck Tshirt",
-
-                                          "imgUrl": "http://bestjquery.com/tutorial/product-grid/demo9/images/img-3.jpg",
-
-                                          "id": 2,
-
-                                          "size": "XL",
-
-                                          "color": "green",
-
-                                          "brand": "peterEngland",
-                                          "price":1500,
-
-                                          "inStock": true
-
-                          }],
-    
-                                        "Kids": [{
-    
-                                                        "title": "Kids",
-    
-                                                        "imgUrl": "",
-    
-                                                        "id": 2,
-    
-                                                        "size:": "M",
-    
-                                                        "color": "Multy",
-    
-                                                        "brand": "Vanhuesen",
-    
-                                                        "inStock": true
-    
-                                        }],
-    
-                                        "Women": [{
-    
-                                                        "title": "Sleeve short",
-    
-                                                        "imgUrl": "http://bestjquery.com/tutorial/product-grid/demo9/images/img-2.jpg",
-    
-                                                        "id": 1,
-    
-                                                        "size": "S",
-    
-                                                        "color": "",
-    
-                                                        "brand": "Ruby",
-    
-                                                        "inStock": true
-    
-                                        },
-                                        {
-    
-                                          "title": "Women",
-
-                                          "imgUrl": "http://bestjquery.com/tutorial/product-grid/demo9/images/img-6.jpg",
-
-                                          "id": 2,
-
-                                          "size:": "S",
-
-                                          "color": "",
-
-                                          "brand": "Soch",
-
-                                          "inStock": true
-
-                          }
-                                      
-                                      ]
-    
-                        }
-    
-        }
-    
-    
-    
-    
-    
-    },
-    //productDetails:[] 
-    
+    user:false,
+    productListData:[]
     }
-
   }
 
   
@@ -217,49 +28,34 @@ class App extends React.Component {
     this.setState({
       user:true
     })
+  //console.log("...." + this.state.user)
+  }
+  
+componentDidMount(){
+ 
+ }
+
+
+  handleLogout = (user) => {
+    this.setState({
+      user:false
+    })
    //console.log("...." + this.state.user)
   }
-  // updateProdDetails = (items) => {
-  //   return () => {
-  //     this.setState({
-  //       productdetails:items
-  //      });
-  //   }  
-    
-  // }
-
   
-// componentDidMount(){
-//   fetch('https://api.jsonbin.io/b/5eccb12ee91d1e45d1119b91' ,{
-//     headers : { 
-//       'Content-Type': 'application/json',
-//       'Accept': 'application/json',
-//       'secret-key':'$2b$10$vKIGuXyJhe4zGQjE8LQGhuqOGLKo6Nog6NoM1DF3BQPOUmRGLI6Zq'
-//      }
-//   })
-//   .then(response => response.json())
-//   .then(json => this.setState({ productItems:json}))
-//  }
-
-
-  // handleLogout = (user) => {
-  //   this.setState({
-  //     user:false
-  //   })
-  //  console.log("...." + this.state.user)
-  // }
-  
-  getData = (item)=> {
-   this.setState({productDetails: item});     
-}
+//   sendItem = (item)=> {
+//   //console.log(item)   
+//   this.setState({
+//     productListData:item
+//   }) 
+// }
 
 
   render(){
 
-    const { productItems,user } = this.state;
+    const {user,productListData } = this.state;
     const customProps = this.props;
-    console.log(this.state.productDetails)
-   
+     
     return (
       <Router>
       <div className="container-fluid">
@@ -272,9 +68,28 @@ class App extends React.Component {
 
   <div className="collapse navbar-collapse" id="navbarSupportedContent">
     <ul className="navbar-nav mr-auto">
-      {/* <li className="nav-item active">
-        <Link to="/landing" className="nav-link" > Home </Link> 
-      </li> */}
+     <li className="nav-item ">
+        <NavLink to="/landing" className="nav-link" > Home </NavLink> 
+      </li>
+      <li className="nav-item ">
+        <NavLink to="/productlist/mens" className="nav-link" > Mens </NavLink> 
+      </li>
+      <li className="nav-item ">
+        <NavLink to="/productlist/womens" className="nav-link" > Womens </NavLink> 
+      </li>
+      <li className="nav-item ">
+        <NavLink to="/productlist/kids" className="nav-link" > Kids </NavLink> 
+      </li>
+      {user ? 
+      <li className="nav-item ">
+      <NavLink to="/logout" onClick ={this.handleLogout} className="nav-link float-right" > Logout </NavLink> 
+     </li> :
+       <li className="nav-item ">
+        <NavLink to="/login" className="nav-link float-right" > Login </NavLink> 
+       </li> 
+      
+      }
+      
       <li className="nav-item"> {user.toString()} </li>
     </ul>
     </div>
@@ -283,11 +98,23 @@ class App extends React.Component {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route exact path={"/"} 
+
+          <Route exact path="/" render={() => (
+              <Redirect to="/landing"/>
+          )}/>
+
+          
+          <Route exact path={"/login"} 
           render={props => (
             <Login  {...props} user={user.toString()} handleLogin = {this.handleLogin}/>
           )}>
+          </Route>       
+          <Route exact path={"/logout"} 
+          render={props => (
+            <Logout  {...props} user={user.toString()} />
+          )}>
           </Route>
+          
           <Route
               exact
               path={"/landing"}
@@ -301,18 +128,18 @@ class App extends React.Component {
               exact
               path={"/productlist/:category"} 
               render={props => (
-                <ProductList sendData={this.getData}  productItemData={productItems}  {...props} 
+                <ProductList  {...props} 
                 />
               )}
             />
           
-          <Route exact   path={"/productdetails/:id"}   
+          { <Route exact   path={"/productdetails/:id"}   
           render={props => (
-          <ProductDetails   sendData={this.state.productDetails} {...props}  />
-          )} />
+          <ProductDetails   {...props}  />
+          )} /> }
 
 
-          
+           
 
         </Switch>
       </div>
