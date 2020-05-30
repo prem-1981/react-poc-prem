@@ -5,6 +5,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import productJSON from './product.json' 
 class ProductList extends React.Component {
 constructor(props) {
     super(props)
@@ -17,11 +18,12 @@ constructor(props) {
     }
 }
     componentDidMount(){
-        fetch('https://api.jsonbin.io/b/5eccb12ee91d1e45d1119b91' ,{
+        fetch( "https://api.jsonbin.io/b/5ed1de0760775a568584ab42",{
           method:'GET',
           headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+           // 'datatype':"json",
             'secret-key':'$2b$10$vKIGuXyJhe4zGQjE8LQGhuqOGLKo6Nog6NoM1DF3BQPOUmRGLI6Zq'
            }
         })
@@ -52,6 +54,7 @@ buttonClick = (item) => {
 render(){
 const params = this.props.match.params.category;
 console.log(params);
+const categoryName = ['Mens','Womens','Kids']
 const { mensData , womensData, kidsData} = this.state;
 // const productFilter = productItemsDat.filter.section;
 // console.log(productItemsDat)
@@ -117,46 +120,50 @@ const { mensData , womensData, kidsData} = this.state;
         <div className="container">
             <div className="row">
             <div className="col-2">  Filter </div>
-            <div className="col-7">  
-            <h2> Mens Category</h2>
-
+            <div className="col-10"> 
+            <br/>
+               <h2>  {
+                 params === "mens" ? categoryName[0] : params == "womens" ? categoryName[1] : 
+                 params === "kids" ? categoryName[2]:null
             
+                }
+                </h2>
         
         {         
            params === "mens" ? 
            mensData.map((item,index) =>
             <ul className="productInfo" key={index}>
                 <li> <img src= {item.imgUrl} border="0" width="150" height="200"/> </li>
-                <li> {item.title} </li>
+                <li className= "custom-style"> {item.title} </li>
                 <li> {item.size} </li>
                 <li> {item.color} </li>
                 <li> {item.brand} </li>
             <li> {item.instock}</li>
-            <li> <b> INR </b> {item.price} </li>
-            <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-primary" > View  </button> 
+            <li className="red-color"> <b> INR </b> {item.price} </li>
+            <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-danger btn-block" > View  </button> 
                 
             </ul>
             ): params === "womens" ? womensData.map((item,index) =>
             <ul className="productInfo" key={index}>
                 <li> <img src= {item.imgUrl} border="0" width="150" height="200"/> </li>
-                <li> {item.title} </li>
+                <li className="custom-style"> {item.title} </li>
                 <li> {item.size} </li>
                 <li> {item.color} </li>
                 <li> {item.brand} </li>
             <li> {item.instock}</li>
-            <li> <b> INR </b> {item.price} </li>
-                <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-primary" > View  </button> 
+            <li className="red-color"> <b> INR </b> {item.price} </li>
+                <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-danger btn-block" > View  </button> 
             </ul>
             ): params === "kids" ? kidsData.map((item,index) =>
             <ul className="productInfo" key={index}>
                 <li> <img src= {item.imgUrl} border="0" width="150" height="200"/> </li>
-                <li> {item.title} </li>
+                <li className="custom-style"> {item.title} </li>
                 <li> {item.size} </li>
                 <li> {item.color} </li>
                 <li> {item.brand} </li>
             <li> {item.instock}</li>
-            <li> <b> INR </b> {item.price} </li>
-                <button onClick={(e)=> {this.buttonClick(item)}}  className="btn btn-primary" > View  </button> 
+            <li className="red-color"> <b> INR </b> {item.price} </li>
+                <button onClick={(e)=> {this.buttonClick(item)}}  className="btn btn-danger btn-block" > View  </button> 
             </ul>
             ) : "No category"
         }
@@ -174,9 +181,6 @@ const { mensData , womensData, kidsData} = this.state;
             {/* <div style={{ display: showing ? "block" : "none" }}> </div> */}
                         
              </div>
-             <div className="col-3"> 
-             Checkout 
-            </div>
         </div> 
         </div>
         

@@ -2,7 +2,6 @@
 import React from 'react';
 import {render} from 'react-dom';
 import './product.css';
-import { isTemplateElement } from '../../../node_modules/@babel/types';
 class ProductDetails extends React.Component {
 constructor(props) {
     super(props)
@@ -10,11 +9,14 @@ constructor(props) {
     this.state = {
         mensProductDetailsDisplay:[],
         womensProductDetailsDisplay:[],
-        kidsProductDetailsDisplay:[]
+        kidsProductDetailsDisplay:[],
+        checkOutItem:[],
+        quantity :0,
+        subTotal:0
     }
     }
 componentDidMount(){
-    fetch('https://api.jsonbin.io/b/5ed0891b79382f568bcef512',{
+    fetch('https://api.jsonbin.io/b/5ed1dda560775a568584ab13',{
         headers : { 
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -37,76 +39,162 @@ componentDidMount(){
 })
 }
 
+getQuantity = (e) => {
+const quantity = e.target.value;
+this.setState({quantity:quantity})
+}
+
+addToCart = (items) => {
+     
+    this.setState( state => ({
+       checkOutItem:[...state.checkOutItem, items],
+    }))
+
+//    this.setState({
+//         checkOutItem:[{
+//             id:items.id,
+//             imgUrl:items.imgUrl,
+//             title:items.title,
+//             price:items.price
+//         }]
+        
+//     })
+//      let itemPush =[];
+//      for(let i=0; i < items.length; i++){
+//          itemPush.push(items);
+         
+//      }
+//      console.log(itemPush)
+   }
 
 render(){
-   const { mensProductDetailsDisplay, womensProductDetailsDisplay,kidsProductDetailsDisplay} = this.state;
+   const { subTotal, quantity, mensProductDetailsDisplay, womensProductDetailsDisplay,kidsProductDetailsDisplay,checkOutItem} = this.state;
    const param = this.props.match.params.id;
-   console.log(this.props)
+   console.log(checkOutItem)
   const paramConvert = parseInt(param)
-  //  console.log(paramConvert)
    const filteredKeys = mensProductDetailsDisplay.filter(items => items.id === paramConvert);
    const filterWomen = womensProductDetailsDisplay.filter(items => items.id === paramConvert);
-   const filterKid = kidsProductDetailsDisplay.filter(items => items.id === paramConvert)
- 
-  
+   const filterKid = kidsProductDetailsDisplay.filter(items => items.id === paramConvert)  
     return(
-        <div>
+        <div className="container">
+        
             <h3>  Product Details </h3>
 
-    
-            
         {
-           filteredKeys.map((itemDetail, index) => (
-                <ul className="productInfo" key={index}>
-                    <li> <img src= {itemDetail.imgUrl} border="0" width="150" height="200"/> </li>
-                    <li> test {itemDetail.title} </li>
-                    <li> {itemDetail.size} </li>
-                    <li> {itemDetail.color} </li>
-                    <li> {itemDetail.brand} </li>
-                     <li> {itemDetail.instock}</li>
-                    <li> <b> INR </b> {itemDetail.price} </li>
-            <button className="btn btn-primary" > Add To Cart  </button> 
-                </ul>
+           filteredKeys.map((itemDetail, index) => 
+               <div className="row" key ={index}>
+                 <div className="col-2 item-photo">
+                 <img src= {itemDetail.imgUrl} border="0" width="150" height="200"/> 
+                 </div>
+               
+                <div className="col-5">
+                    <h2> {itemDetail.title} </h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                     when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                     </p>
+                    <h3> {itemDetail.size} </h3>
+                    <h3> {itemDetail.color} </h3>
+                    <h3> {itemDetail.brand} </h3>
+                     <h3> {itemDetail.instock}</h3>
+                     <h3> <input type="number" 
+                      onInput = {(e)=> this.getQuantity(e)}
+                      onKeyUp = {(e)=> this.getQuantity(e)}/>  </h3>
+                    <h3> <b> INR </b> {itemDetail.price} </h3>
+                <button onClick={(e) => this.addToCart(itemDetail)} className="btn btn-danger" > Add To Cart  </button> 
+            </div>
+            </div>  
               )
-            )
+            
          } 
 
          {
-           filterWomen.map((itemDetail, index) => (
-                <ul className="productInfo" key={index}>
-                    <li> <img src= {itemDetail.imgUrl} border="0" width="150" height="200"/> </li>
-                    <li> test {itemDetail.title} </li>
-                    <li> {itemDetail.size} </li>
-                    <li> {itemDetail.color} </li>
-                    <li> {itemDetail.brand} </li>
-                     <li> {itemDetail.instock}</li>
-                    <li> <b> INR </b> {itemDetail.price} </li>
-            <button className="btn btn-primary" > Add To Cart  </button> 
-                </ul>
-              )
-            )
+           filterWomen.map((itemDetail, index) => 
+            <div className="row" key ={index}>
+            <div className="col-2 item-photo">
+            <img src= {itemDetail.imgUrl} border="0" width="150" height="200"/> 
+            </div>
+          
+           <div className="col-5">
+               <h2> {itemDetail.title} </h2>
+               <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                </p>
+               <h3> {itemDetail.size} </h3>
+               <h3> {itemDetail.color} </h3>
+               <h3> {itemDetail.brand} </h3>
+                <h3> {itemDetail.instock}</h3>
+                <h3> <input type="number" 
+                      onInput = {(e)=> this.getQuantity(e)}
+                      onKeyUp = {(e)=> this.getQuantity(e)}/>  </h3>               
+               <h3> <b> INR </b> {itemDetail.price} </h3>
+       <button className="btn btn-danger" onClick={(e) => this.addToCart(itemDetail)}> Add To Cart  </button> 
+       </div>
+       </div>)
+              
+            
          } 
 
 
          {
-           filterKid.map((itemDetail, index) => (
-                <ul className="productInfo" key={index}>
-                    <li> <img src= {itemDetail.imgUrl} border="0" width="150" height="200"/> </li>
-                    <li> test {itemDetail.title} </li>
-                    <li> {itemDetail.size} </li>
-                    <li> {itemDetail.color} </li>
-                    <li> {itemDetail.brand} </li>
-                     <li> {itemDetail.instock}</li>
-                    <li> <b> INR </b> {itemDetail.price} </li>
-            <button className="btn btn-primary" > Add To Cart  </button> 
-                </ul>
-              )
+           filterKid.map((itemDetail, index) => 
+            <div className="row" key ={index}>
+            <div className="col-2 item-photo">
+            <img src= {itemDetail.imgUrl} border="0" width="150" height="200"/> 
+            </div>
+          
+           <div className="col-5">
+               <h2> {itemDetail.title} </h2>
+               <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                </p>
+               <h3> {itemDetail.size} </h3>
+               <h3> {itemDetail.color} </h3>
+               <h3> {itemDetail.brand} </h3>
+                <h3> {itemDetail.instock}</h3>
+                <h3> <input type="number" 
+                      onInput = {(e)=> this.getQuantity(e)}
+                      onKeyUp = {(e)=> this.getQuantity(e)}/>  </h3>
+               <h3> <b> INR </b> {itemDetail.price} </h3>
+         <button className="btn btn-danger" onClick={(e) => this.addToCart(itemDetail)} > Add To Cart  </button> 
+       </div>
+       </div>
+              
             )
-         } 
+         } 	
+         <br/>
+         <div className ="row">
+         { checkOutItem.map((items,index) => (
+         
+            <table   key={index} className="table table-hover table-condensed" >
+            <thead>
+                <tr>
+                    <th> Product </th>
+                    <th> Title </th>
+                    <th> Quantity </th>
+                    <th> Price </th>
+                    <th> Subtotal </th>
 
-
-
-        </div>
+                </tr>
+            </thead>
+            <tbody >
+            <tr>
+            <td> <img src= {items.imgUrl} border="0" width="150" height="200"/> </td>
+            <td> {items.title} </td>
+            <td> {quantity} </td>
+            <td> {items.price} </td>
+            <td> {quantity * items.price}</td>
+            </tr>
+            </tbody>
+            </table>
+        )
+            ) }
+            </div>		
+         </div>
+         
+        
     )
 }
 
