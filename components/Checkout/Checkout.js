@@ -5,13 +5,24 @@ class Checkout extends React.Component {
 constructor(props){
 super(props)
 this.state = {
-    quantity:1,
+    quantity:1
     }
+    
 }
 
 componentDidMount(){
-   
-    
+   // localStorage.clear()
+}
+
+getLocalItems = (quantity,total) =>{
+console.log(quantity,total);
+const quantotal = {
+    quantity:quantity,
+    total:total
+}
+const cartItemDetails = localStorage.setItem('cartItem', JSON.stringify(quantotal));
+this.props.history.push("/cart");
+//const cartItemDetail = localStorage.getItem(JSON.parse(cartItemDetails))
 }
 
 getQuantity = (e) => {
@@ -28,6 +39,7 @@ render(){
      return (
      
         <div className="container">
+        {/* <h1> {this.props.user}</h1> */}
         <table  className="table table-hover table-condensed">
                         <thead>
                             <tr>
@@ -57,8 +69,8 @@ render(){
                                 </td>
                                 <td data-th="Subtotal" className="text-center">  INR {quantity * gettingObj.price}</td>
                                 <td className="actions" data-th="">
-                                    <button className="btn btn-info btn-sm"><i className="fa fa-refresh"></i></button>
-                                    <button className="btn btn-danger btn-sm"><i className="fa fa-trash-o"></i></button>								
+                                   
+                                    <button className="btn btn-danger btn-sm"><i className="fa fa-trash-o"> X </i></button>								
                                 </td>
                             </tr>
                         </tbody>
@@ -70,7 +82,9 @@ render(){
                                 <td><Link to ='/landing' className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</Link></td>
                                 <td colSpan="2" className="hidden-xs"></td>
                                 <td className="hidden-xs text-center"><strong> INR {quantity * gettingObj.price} </strong></td>
-                                <td><Link to=""  className="btn btn-success btn-block">Checkout </Link></td>
+                                <td><button  
+                                onClick = {(e) => {this.getLocalItems(quantity, quantity * gettingObj.price)}}
+                                className="btn btn-success btn-block">Checkout </button></td>
                             </tr>
                         </tfoot>
                     </table>

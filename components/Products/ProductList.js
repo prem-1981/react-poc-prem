@@ -119,7 +119,20 @@ const { mensData , womensData, kidsData} = this.state;
 
         <div className="container">
             <div className="row">
-            <div className="col-2">  Filter </div>
+            <div className="col-2">  
+           <br/>
+           <br/>
+            <ul className="list-unstyled">
+              
+              <li> <h6> Filter By  </h6></li> 
+              <li><label><input type="checkbox" className="all"/> All </label> </li>             
+              <li><label><input type="checkbox" name="color" /> Color </label></li>
+              <li><label><input type="checkbox" name="size"/> Size</label></li>
+              <li><label><input type="checkbox" name="Brand"/> Brand</label></li>
+              
+            </ul>
+        </div>
+            
             <div className="col-10"> 
             <br/>
                <h2>  {

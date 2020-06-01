@@ -52,7 +52,7 @@ addToCart = (items) => {
     }))
     localStorage.setItem('checkOutItem', JSON.stringify(items))
     localStorage.getItem('checkOutItem',items )
-    
+    this.props.history.push("/checkout"); 
 
 //    this.setState({
 //         checkOutItem:[{

@@ -14,6 +14,7 @@ import Logout from './components/Login/Logout'
 import ProductDetails from './components/Products/ProductDetails';
 import productJSON from './components/Products/product' 
 import Checkout from './components/Checkout/Checkout';
+import Cart from './components/Checkout/Cart'
 import 'bootstrap/dist/css/bootstrap.min.css';
 class App extends React.Component {
   constructor(props) {
@@ -144,6 +145,10 @@ componentDidMount(){
           <Checkout   {...props}  />
           )} /> }
 
+      { <Route exact   path={"/cart"}   
+          render={props => (
+          <Cart user={user.toString()}  {...props}  />
+          )} /> }
            
 
         </Switch>
