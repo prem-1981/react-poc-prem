@@ -61,7 +61,7 @@ componentDidMount(){
     return (
       <Router>
       <div className="container-fluid">
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar navbar-expand-lg navbar navbar-dark bg-danger">
 
   <Link to="#" className="navbar-brand" > V-MART</Link>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
