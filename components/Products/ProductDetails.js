@@ -1,4 +1,3 @@
-//https://bootsnipp.com/snippets/A2pXB
 import React from 'react';
 import {render} from 'react-dom';
 import './product.css';
@@ -10,10 +9,12 @@ constructor(props) {
         mensProductDetailsDisplay:[],
         womensProductDetailsDisplay:[],
         kidsProductDetailsDisplay:[],
-        checkOutItem:[],
-        quantity :0,
-        subTotal:0
+        checkOutItem:[]
+        // quantity :0
     }
+
+
+
     }
 componentDidMount(){
     fetch('https://api.jsonbin.io/b/5ed1dda560775a568584ab13',{
@@ -39,16 +40,19 @@ componentDidMount(){
 })
 }
 
-getQuantity = (e) => {
-const quantity = e.target.value;
-this.setState({quantity:quantity})
-}
+// getQuantity = (e) => {
+// const quantity = e.target.value;
+// this.setState({quantity:quantity})
+// }
 
 addToCart = (items) => {
-     
+  
     this.setState( state => ({
-       checkOutItem:[...state.checkOutItem, items],
+       checkOutItem:[...state.checkOutItem, items]
     }))
+    localStorage.setItem('checkOutItem', JSON.stringify(items))
+    localStorage.getItem('checkOutItem',items )
+    
 
 //    this.setState({
 //         checkOutItem:[{
@@ -68,7 +72,7 @@ addToCart = (items) => {
    }
 
 render(){
-   const { subTotal, quantity, mensProductDetailsDisplay, womensProductDetailsDisplay,kidsProductDetailsDisplay,checkOutItem} = this.state;
+   const {mensProductDetailsDisplay, womensProductDetailsDisplay,kidsProductDetailsDisplay,checkOutItem} = this.state;
    const param = this.props.match.params.id;
    console.log(checkOutItem)
   const paramConvert = parseInt(param)
@@ -97,10 +101,10 @@ render(){
                     <h3> {itemDetail.color} </h3>
                     <h3> {itemDetail.brand} </h3>
                      <h3> {itemDetail.instock}</h3>
-                     <h3> <input type="number" 
+                     {/* <h3> <input type="number" 
                       onInput = {(e)=> this.getQuantity(e)}
                       onKeyUp = {(e)=> this.getQuantity(e)}/>  </h3>
-                    <h3> <b> INR </b> {itemDetail.price} </h3>
+                    <h3> <b> INR </b> {itemDetail.price} </h3> */}
                 <button onClick={(e) => this.addToCart(itemDetail)} className="btn btn-danger" > Add To Cart  </button> 
             </div>
             </div>  
@@ -125,10 +129,10 @@ render(){
                <h3> {itemDetail.color} </h3>
                <h3> {itemDetail.brand} </h3>
                 <h3> {itemDetail.instock}</h3>
-                <h3> <input type="number" 
+                {/* <h3> <input type="number" 
                       onInput = {(e)=> this.getQuantity(e)}
                       onKeyUp = {(e)=> this.getQuantity(e)}/>  </h3>               
-               <h3> <b> INR </b> {itemDetail.price} </h3>
+               <h3> <b> INR </b> {itemDetail.price} </h3> */}
        <button className="btn btn-danger" onClick={(e) => this.addToCart(itemDetail)}> Add To Cart  </button> 
        </div>
        </div>)
@@ -154,9 +158,9 @@ render(){
                <h3> {itemDetail.color} </h3>
                <h3> {itemDetail.brand} </h3>
                 <h3> {itemDetail.instock}</h3>
-                <h3> <input type="number" 
+                {/* <h3> <input type="number" 
                       onInput = {(e)=> this.getQuantity(e)}
-                      onKeyUp = {(e)=> this.getQuantity(e)}/>  </h3>
+                      onKeyUp = {(e)=> this.getQuantity(e)}/>  </h3> */}
                <h3> <b> INR </b> {itemDetail.price} </h3>
          <button className="btn btn-danger" onClick={(e) => this.addToCart(itemDetail)} > Add To Cart  </button> 
        </div>
@@ -166,7 +170,7 @@ render(){
          } 	
          <br/>
          <div className ="row">
-         { checkOutItem.map((items,index) => (
+         {/* { checkOutItem.map((items,index) => (
          
             <table   key={index} className="table table-hover table-condensed" >
             <thead>
@@ -190,8 +194,9 @@ render(){
             </tbody>
             </table>
         )
-            ) }
-            </div>		
+            ) } */}
+            </div>
+            	
          </div>
          
         

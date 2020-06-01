@@ -13,6 +13,7 @@ import ProductList from './components/Products/ProductList';
 import Logout from './components/Login/Logout'
 import ProductDetails from './components/Products/ProductDetails';
 import productJSON from './components/Products/product' 
+import Checkout from './components/Checkout/Checkout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 class App extends React.Component {
   constructor(props) {
@@ -138,6 +139,10 @@ componentDidMount(){
           <ProductDetails   {...props}  />
           )} /> }
 
+         { <Route exact   path={"/checkout"}   
+          render={props => (
+          <Checkout   {...props}  />
+          )} /> }
 
            
 
