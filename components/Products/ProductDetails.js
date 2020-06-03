@@ -61,10 +61,10 @@ addToCart = (items) => {
     const oldproduct = localStorage.getItem('checkOutItem') ? localStorage.getItem('checkOutItem') : "[]";
     //JSON.parse(localStorage.getItem('myMovie')||"[]");
    // localStorage.getItem('checkOutItem',items )
-    const arrayproduct =  JSON.parse(oldproduct);
+    const arrayProduct =  JSON.parse(oldproduct);
     //console.log(arrayproduct);
-    arrayproduct.push(items);
-    localStorage.setItem('checkOutItem', JSON.stringify(arrayproduct));    
+    arrayProduct.push(items);
+    localStorage.setItem('checkOutItem', JSON.stringify(arrayProduct));    
     // this.setState( state => ({
     //     checkOutItem:[...state.checkOutItem, items]
     //  }))
