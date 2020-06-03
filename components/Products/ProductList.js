@@ -13,7 +13,13 @@ constructor(props) {
         //showing: false,
         mensData:[],
         womensData:[],
-        kidsData:[]
+        kidsData:[],
+        allChecked:false,
+        colors : [
+            {id:1,color:'red', isChecked:false},
+            {id:2, color:'blue',isChecked:false},{id:3,color:'green',isChecked:false},
+            { id:4, color:'maroon',isChecked:false},{id:5,color:'yellow',isChecked:false}
+        ]
      
     }
 }
@@ -43,79 +49,51 @@ constructor(props) {
         })
        }
 
-buttonClick = (item) => {
+componentDidUpdate(){
+    //console.log(prevState);
+    //console.log(prevProps)
+
+}
+
+
+buttonClick = (e,item) => {
+e.preventDefault();
  const itemID = item.id;
  const url = "/productdetails"
  this.props.history.push(`${url}/${itemID}`);
- console.log(itemID)
+ //console.log(itemID)
  
 }
+handleChange = evt =>
+{
+let itemName = evt.target.name;
+console.log(itemName)
+let checked = evt.target.checked;
+console.log(checked)
+this.setState( prevState=> {
+    let {colors, allChecked} = prevState;
+    if(itemName=== "checkAll")
+    {
+        allChecked = checked;
+        colors = colors.map(coltype => ({...coltype, isChecked:checked}))
+    } else {
 
+   
+    colors = colors.map(coltype =>
+        coltype.color === itemName ? { ...coltype, isChecked: checked } : coltype
+      );
+      allChecked = colors.every(coltype => coltype.isChecked)
+    }
+    return {colors, allChecked}
+})
+
+  }
 render(){
 const params = this.props.match.params.category;
-console.log(params);
+//console.log(params);
 const categoryName = ['Mens','Womens','Kids']
 const { mensData , womensData, kidsData} = this.state;
-// const productFilter = productItemsDat.filter.section;
-// console.log(productItemsDat)
-//console.log(mensListItem)
-// const womensItem = productFilter.Women;
-// const kidsItem = productFilter.Kids
-
-// const mensCategory = productFilter.map((item, index) => 
-//  <ul className="productInfo" key={index}>
-//      <li> <img src= {item.imgUrl} border="0" width="150" height="200"/> </li>
-//     <li> {item.title} </li>
-//     <li> {item.size} </li>
-//     <li> {item.color} </li>
-//     <li> {item.brand} </li>
-//    <li> {item.instock}</li>
-// <li> <b> INR </b> {item.price} </li>
-//     <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-primary" > View  </button> 
-// </ul>
-//    )
-    
-//     const womensCategory = womensItem.map((item, index) => 
-// <ul className="productInfo" key={index}>
-//     <li> <img src= {item.imgUrl} border="0" width="150" height="200"/> </li>
-//     <li> {item.title} </li>
-//     <li> {item.size} </li>
-//     <li> {item.color} </li>
-//     <li> {item.brand} </li>
-//     <li> {item.instock}</li>
-//     <li> <b> INR </b> {item.price} </li>
-//     <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-primary" > View  </button> 
-// </ul>
-//     )
-
-//     const kidsCategory = kidsItem.map((item, index) => 
-// <ul className="productInfo" key={index}>
-//     <li> <img src= {item.imgUrl} border="0" width="150" height="200"/> </li>
-//     <li> {item.title} </li>
-//     <li> {item.size} </li>
-//     <li> {item.color} </li>
-//     <li> {item.brand} </li>
-//     <li> {item.instock}</li>
-//     <li> <b> INR </b> {item.price} </li>
-//     <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-primary" > View  </button> 
-// </ul>
-//     )
-
-
-    
-// const ItemDetailView = productData.map((items,index) => 
-// <ul className="productInfo" key={index}>
-// <li> <img src= {items.imgUrl} border="0" width="150" height="200"/> </li>
-// <li> {items.title} </li>
-// <li> {items.size} </li>
-// <li> {items.color} </li>
-// <li> {items.brand} </li>
-// <li> <b> INR </b> {items.price} </li>
-// <li> {items.instock}</li>
-// <button className="btn btn-primary" > AddToCart  </button> 
-// </ul>  )
-
- return(
+return(
 
         <div className="container">
             <div className="row">
@@ -125,11 +103,44 @@ const { mensData , womensData, kidsData} = this.state;
             <ul className="list-unstyled">
               
               <li> <h6> Filter By  </h6></li> 
-              <li><label><input type="checkbox" className="all"/> All </label> </li>             
-              <li><label><input type="checkbox" name="color" /> Color </label></li>
-              <li><label><input type="checkbox" name="size"/> Size</label></li>
-              <li><label><input type="checkbox" name="Brand"/> Brand</label></li>
-              
+            
+              <li><label> Color </label> </li>  
+              <input
+                type="checkbox"
+                name="checkAll"
+                checked={this.state.allChecked}
+                onChange={this.handleChange}
+                />
+                Check all
+            
+              {this.state.colors.map(coltype => 
+                  <li key={coltype.id}> 
+                  <label> 
+                      
+                <input type="checkbox"  
+                  name = {coltype.color}
+                  value={coltype.color}                
+                  checked={coltype.isChecked}
+                  onChange={this.handleChange}/> 
+
+                  {coltype.color} </label> </li>
+               
+              )}
+               
+              <hr/>
+              {/* <li>Size</li>
+              {size.map((index,size) => 
+              <ul key={index}>
+                  <li><label><input type="checkbox" name="size"/> {size}</label></li>
+                </ul>
+              )}
+              <hr/>
+              <li>Brand</li>
+              {brand.map((index,brand) => 
+              <ul key={index}>
+                  <li><label><input type="checkbox" name="size"/> {brand}</label></li>
+                </ul>
+              )} */}
             </ul>
         </div>
             
@@ -153,7 +164,7 @@ const { mensData , womensData, kidsData} = this.state;
                 <li> {item.brand} </li>
             <li> {item.instock}</li>
             <li className="red-color"> <b> INR </b> {item.price} </li>
-            <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-danger btn-block" > View  </button> 
+            <button onClick={(e)=> {this.buttonClick(e,item)}} className="btn btn-danger btn-block" > View  </button> 
                 
             </ul>
             ): params === "womens" ? womensData.map((item,index) =>
@@ -165,7 +176,7 @@ const { mensData , womensData, kidsData} = this.state;
                 <li> {item.brand} </li>
             <li> {item.instock}</li>
             <li className="red-color"> <b> INR </b> {item.price} </li>
-                <button onClick={(e)=> {this.buttonClick(item)}} className="btn btn-danger btn-block" > View  </button> 
+                <button onClick={(e)=> {this.buttonClick(e,item)}} className="btn btn-danger btn-block" > View  </button> 
             </ul>
             ): params === "kids" ? kidsData.map((item,index) =>
             <ul className="productInfo" key={index}>
@@ -176,7 +187,7 @@ const { mensData , womensData, kidsData} = this.state;
                 <li> {item.brand} </li>
             <li> {item.instock}</li>
             <li className="red-color"> <b> INR </b> {item.price} </li>
-                <button onClick={(e)=> {this.buttonClick(item)}}  className="btn btn-danger btn-block" > View  </button> 
+                <button onClick={(e)=> {this.buttonClick(e,item)}}  className="btn btn-danger btn-block" > View  </button> 
             </ul>
             ) : "No category"
         }

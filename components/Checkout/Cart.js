@@ -11,30 +11,20 @@ this.state = {
         pincode:"560043, Karnataka",
         mobile:"9980429832",
     },
-    localStorageItemsDisplayed:[],
-    localStorageItemsCustom:[]
-
+    checkCart:[]
 }
     
 }
 
 componentDidMount(){
-   
-const localStorageItems = localStorage.getItem('checkOutItem');
-const localStorageFewItems = localStorage.getItem('cartItem');
-//console.log(localStorageItems, localStorageFewItems)
-const gettingObj = JSON.parse(localStorageItems);
-const getItemObj = JSON.parse(localStorageFewItems)
-console.log(gettingObj,getItemObj)
-this.setState({
-    localStorageItemsDisplayed:gettingObj,
-    localStorageItemsCustom:getItemObj
-})
-    
-    
+    // localStorage.clear()
+    const products = JSON.parse(localStorage.getItem('checkOutItem'));
+    console.log(products);
+    this.setState({checkCart:products}   )
 }
 
 render(){
+    const {checkCart} = this.state
     return (
         <div className="container-fluid">
         <div className="row">
@@ -50,7 +40,55 @@ render(){
         </div>
         <div className="row">
         <div className="col-10">
-         <table className="table table-hover table-condensed"> 
+        <table    className="table table-hover table-condensed" >
+         <thead>
+             <tr>
+                 <th> Product </th>
+                 <th> Title </th>
+                 <th> Quantity </th>
+                 <th> Price </th>
+                 <th> Subtotal </th>
+
+             </tr>
+         </thead>
+
+         { checkCart ? checkCart.map((items,index) => (
+       
+         
+         <tbody key={index} >
+         <tr>
+         <td>  <img src= {items.imgUrl} border="0" width="50" height="60"/> </td>
+         <td> {items.title} </td>
+         <td> {items.quantity} </td>
+         <td> {items.price} </td>
+         <td> {items.price * items.quantity} </td>
+         </tr>
+         </tbody>
+         
+         
+     )
+       ): "No Pending Checkout"}
+        <tfoot>
+                    <tr>
+                    <td colSpan="2" align="right"> <button className="btn btn-primary">
+                                Make Payment
+                            </button> </td>
+
+                    <td colSpan="3" align="right"> 
+                                Total Payment <h4>  INR </h4>
+                             </td>
+
+                        
+                    </tr>
+                </tfoot>
+       </table>
+        
+        
+        
+        
+        
+        
+         {/* <table className="table table-hover table-condensed"> 
          <thead>
                             <tr>
                                 <th >Product</th>
@@ -76,7 +114,7 @@ render(){
 
                     </tr>
                 </tfoot>
-           </table>
+           </table> */}
         </div>
         </div>
             
