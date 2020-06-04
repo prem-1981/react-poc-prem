@@ -1,4 +1,3 @@
-/* eslint-disable */ 
 import React from 'react'
 import {render} from 'react-dom';
 import {Link} from 'react-router-dom'
@@ -24,8 +23,15 @@ componentDidMount(){
     this.setState({checkCart:products}   )
 }
 
+   
 render(){
     const {checkCart} = this.state
+    const sum = checkCart.reduce((index, items) => {
+        return items.price * items.quantity
+       }, 0);
+     const avg = sum *checkCart.length
+
+   
     return (
         <div className="container-fluid">
         <div className="row">
@@ -71,13 +77,14 @@ render(){
        ): "No Pending Checkout"}
         <tfoot>
                     <tr>
-                    <td colSpan="2" align="right"> <button className="btn btn-primary">
-                                Make Payment
-                            </button> </td>
-
-                    <td colSpan="3" align="right"> 
-                                Total Payment <h4>  INR </h4>
+                    <td colSpan="2" align="right"> 
+                               
                              </td>
+                    <td colSpan="3" align="right">  Total Payment <span className="net"> INR </span>  <h3>  <span className="amount">   {avg}  </span> </h3>  <button className="btn btn-primary">
+                                Make Payment 
+                            </button>  </td>
+
+                    
 
                         
                     </tr>

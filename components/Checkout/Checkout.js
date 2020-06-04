@@ -1,6 +1,8 @@
+/* eslint-disable */ 
 import React from 'react'
 import {render} from 'react-dom';
 import {Link} from 'react-router-dom'
+import './checkout.css'
 class Checkout extends React.Component {
 constructor(props){
 super(props)
@@ -11,7 +13,7 @@ this.state = {
 }
 
 componentDidMount(){
-   //localStorage.clear()
+  //localStorage.clear()
    const products = JSON.parse(localStorage.getItem('checkOutItem'));
    //JSON.parse(localStorage.getItem('checkOutItem'))
    //localStorage.setItem('checkOutItem', JSON.stringify(checkOutItem));
@@ -29,37 +31,38 @@ return true
 }
 
 getLocalItems = (e) =>{
-// //console.log(quantity,total);
-// const quantotal = {
-// //     quantity:quantity
-// //     //total:total
-// // }
 // const cartItemDetails = localStorage.setItem('cartItem', JSON.stringify(quantotal));
 this.props.history.push("/cart");
 // //const cartItemDetail = localStorage.getItem(JSON.parse(cartItemDetails))
 }
 
-getQuantity = (e,index,items) => {
+getQuantity = (e,items) => {
     const itemQuantity = e.target.value 
     items.quantity = itemQuantity;
     const subtotals = items.quantity * items.price;
    // console.log(subtotals)
     let productCartCopy = JSON.parse(JSON.stringify(this.state.productCart))
    //make changes to ingredients
-   productCartCopy[0].subtotals = subtotals//whatever new ingredients are
-   console.log(productCartCopy)
+  // console.log(subtotals)
+   productCartCopy[0].subtotals = subtotals//whatever new
    localStorage.setItem('checkOutItem', JSON.stringify(productCartCopy));
+   console.log(productCartCopy)
    this.setState({
       productCart:productCartCopy 
     }, () => {
-       // console.log(this.state.productCart);
+      // console.log(this.state.productCart);
       }) 
+
+
+
+
     }
 
 removeItem = (index)=> {
     let  productArray = this.state ? this.state.productCart :null
     productArray.splice(index,1);
     localStorage.setItem('checkOutItem', JSON.stringify(productArray));
+    this.props.cartCount(productArray.length)
     //localStorage.setItem('checkOutItem', JSON.stringify('checkOutItem'))
     this.setState({productCart:productArray})
   }
@@ -70,6 +73,15 @@ render(){
 //     const gettingObj = JSON.parse(checkOutData);
 //   //  console.log(gettingObj)
    
+const sum = productCart ? productCart.reduce((index, items) => {
+ return items ? items.subtotals : null
+}, 0) : null;
+
+console.log(sum)
+
+const avg = sum ? sum * productCart.length:null
+console.log(avg)
+
      return (
      
         <div className="container">
@@ -92,7 +104,7 @@ render(){
          <td> <img src= {items.imgUrl} border="0" width="50" height="70"/> </td>
          <td> {items.title} </td>
          <td> <input type="value" value={items.quantity}
-                                    onChange = {(e)=> this.getQuantity(e,index,items)}/>  </td>
+                                    onChange = {(e)=> this.getQuantity(e,items)}/>  </td>
          <td> {items.price} </td>
          <td> { items.quantity*items.price}</td>
          <td> <button   onClick = {(e) =>{this.removeItem(index)}} className="btn btn-info"> X </button></td>
@@ -111,11 +123,13 @@ render(){
                                 onClick = {(e) => {this.getLocalItems(e)}}
                                 className="btn btn-success btn-block">Checkout </button>
                 </td>
-                <td>
-                        NET TOTAL
+                <td> 
+                                               
+                      
+                      <h5> <span className="net">    Net Total  </span> </h5>
                 </td>
                 <td>
-                        INR 2000
+                <span className="net"> INR </span>  <h3>  <span className="amount">   {avg}  </span> </h3> 
                 </td>
              
              </tr>
