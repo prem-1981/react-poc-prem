@@ -70,7 +70,7 @@ addToCart = (items) => {
     //  }))
 
 
-     console.log(arrayproduct)
+  //   console.log(arrayproduct)
     this.props.history.push("/checkout"); 
 
 //    this.setState({

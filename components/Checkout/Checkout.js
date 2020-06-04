@@ -114,9 +114,8 @@ render(){
          <tr  key={index}>
          <td> <img src= {items.imgUrl} border="0" width="50" height="70"/> </td>
          <td> {items.title} </td>
-         <td> <input type="number" min="1" max ="100" 
-                                    onInput = {(e)=> this.getQuantity(e,index,items)}
-                                    onKeyUp = {(e)=> this.getQuantity(e,index,items)}/>  </td>
+         <td> <input type="value" value={items.quantity}
+                                    onChange = {(e)=> this.getQuantity(e,index,items)}/>   </td>
          <td> {items.price} </td>
          <td> { items.quantity*items.price}</td>
          <td> <button   onClick = {(e) =>{this.removeItem(index)}} className="btn btn-info"> X </button></td>
