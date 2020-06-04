@@ -12,29 +12,36 @@ import LandingPage from './components/LandingPage/LandingPage';
 import ProductList from './components/Products/ProductList';
 import Logout from './components/Login/Logout'
 import ProductDetails from './components/Products/ProductDetails';
-import productJSON from './components/Products/product' 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css'
 import Checkout from './components/Checkout/Checkout';
 import Cart from './components/Checkout/Cart'
-import 'bootstrap/dist/css/bootstrap.min.css';
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
     user:false,
-    productListData:[]
+    username:"",
+    productListData:[],
+    cartLength:0
     }
+    
   }
 
   
   handleLogin = (user) => {
+    console.log(user)
     this.setState({
-      user:true
+      user:true,
+      username:user
     })
   //console.log("...." + this.state.user)
   }
   
 componentDidMount(){
- 
+  const localStorageItems = localStorage ? localStorage.getItem('username'):null
+  const userStatus = localStorageItems ? (localStorageItems.user === "true") :null
+  //console.log(userStatus)
  }
 
 
@@ -52,18 +59,24 @@ componentDidMount(){
 //   }) 
 // }
 
+ cartCount = (length)=>{
+  this.setState({
+    cartLength:length
+  })
+ }
 
   render(){
 
     const {user,productListData } = this.state;
     const customProps = this.props;
+   
      
     return (
       <Router>
       <div className="container-fluid">
       <nav className="navbar navbar-expand-lg navbar navbar-dark bg-danger">
 
-  <Link to="#" className="navbar-brand" > V-MART</Link>
+  <Link to="/landing" className="navbar-brand" > V-MART</Link>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
   </button>
@@ -91,8 +104,15 @@ componentDidMount(){
        </li> 
       
       }
-      
-      <li className="nav-item"> {user.toString()} </li>
+      {/* <li className="nav-item "> {user.toString()}  </li> */}
+      <li className="nav-item navbar-brand">  <span className="username">
+        {this.state.username} </span> </li>
+        <li>
+         <Link to="/checkout" className="nav-link nav-item navbar-brand" > <span className="username">
+       CART ITEMS {this.state ? this.state.cartLength:"0"} </span> </Link>
+          </li>
+
+
     </ul>
     </div>
     </nav>
@@ -121,7 +141,7 @@ componentDidMount(){
               exact
               path={"/landing"}
               render={props => (
-                <LandingPage user={user.toString()}    {...props} 
+                <LandingPage user={user.toString()} username={this.state.username}   {...props} 
                 />
               )}
             />
@@ -137,19 +157,22 @@ componentDidMount(){
           
           { <Route exact   path={"/productdetails/:id"}   
           render={props => (
-          <ProductDetails   {...props}  />
+          <ProductDetails cartCount={this.cartCount}  {...props}  />
           )} /> }
 
-         { <Route exact   path={"/checkout"}   
+
+          
+
+             { <Route exact   path={"/checkout"}   
           render={props => (
-          <Checkout   {...props}  />
+          <Checkout user={user.toString()} cartCount={this.cartCount} {...props}  />
           )} /> }
 
-      { <Route exact   path={"/cart"}   
+          { <Route exact   path={"/cart"}   
           render={props => (
           <Cart user={user.toString()}  {...props}  />
           )} /> }
-           
+
 
         </Switch>
       </div>
