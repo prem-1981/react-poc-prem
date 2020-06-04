@@ -1,4 +1,3 @@
-/* eslint-disable */ 
 import React from 'react'
 import {render} from 'react-dom';
 import {Link} from 'react-router-dom'
@@ -16,7 +15,7 @@ componentDidMount(){
    const products = JSON.parse(localStorage.getItem('checkOutItem'));
    //JSON.parse(localStorage.getItem('checkOutItem'))
    //localStorage.setItem('checkOutItem', JSON.stringify(checkOutItem));
-   console.log(products);
+ //  console.log(products);
    this.setState({productCart:products})
  
 
@@ -32,20 +31,15 @@ return true
 getLocalItems = (e) =>{
 // //console.log(quantity,total);
 // const quantotal = {
-//     quantity:quantity
-//     //total:total
-// }
+// //     quantity:quantity
+// //     //total:total
+// // }
 // const cartItemDetails = localStorage.setItem('cartItem', JSON.stringify(quantotal));
 this.props.history.push("/cart");
 // //const cartItemDetail = localStorage.getItem(JSON.parse(cartItemDetails))
 }
 
 getQuantity = (e,index,items) => {
-   // const idValue = items.quantity;
-   
-    //const rowID = index;
-    //const itemPrice = items.price;
-   // getTotal(items);
     const itemQuantity = e.target.value 
     items.quantity = itemQuantity;
     const subtotals = items.quantity * items.price;
@@ -54,6 +48,7 @@ getQuantity = (e,index,items) => {
    //make changes to ingredients
    productCartCopy[0].subtotals = subtotals//whatever new ingredients are
    console.log(productCartCopy)
+   localStorage.setItem('checkOutItem', JSON.stringify(productCartCopy));
    this.setState({
       productCart:productCartCopy 
     }, () => {
@@ -61,32 +56,14 @@ getQuantity = (e,index,items) => {
       }) 
     }
 
-//    getTotal = (items) => {
-//     this.state.productCart.reduce(
-//         (sum, items) => sum + items.subtotals, 0 )
-//    }
-
-
-  
-
-// this.setState({
-//     productCart: [ ...this.state.productCart, Object.assign({subtotals:subtotals})]
-//   }, () => {
-//     console.log(this.state.productCart);
-//   });
-
 removeItem = (index)=> {
-   //event.preventDefault();
-   // console.log(index)
     let  productArray = this.state ? this.state.productCart :null
     productArray.splice(index,1);
     localStorage.setItem('checkOutItem', JSON.stringify(productArray));
     //localStorage.setItem('checkOutItem', JSON.stringify('checkOutItem'))
     this.setState({productCart:productArray})
   }
-    
 
-//console.log(JSON.parse(checkOutData));
 render(){
     const {quantity, subtotals, productCart} = this.state;
 //     const checkOutData = localStorage.getItem('checkOutItem')
@@ -115,7 +92,7 @@ render(){
          <td> <img src= {items.imgUrl} border="0" width="50" height="70"/> </td>
          <td> {items.title} </td>
          <td> <input type="value" value={items.quantity}
-                                    onChange = {(e)=> this.getQuantity(e,index,items)}/>   </td>
+                                    onChange = {(e)=> this.getQuantity(e,index,items)}/>  </td>
          <td> {items.price} </td>
          <td> { items.quantity*items.price}</td>
          <td> <button   onClick = {(e) =>{this.removeItem(index)}} className="btn btn-info"> X </button></td>
