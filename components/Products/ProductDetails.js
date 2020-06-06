@@ -1,4 +1,3 @@
-/* eslint-disable */ 
 import React from 'react';
 import {render} from 'react-dom';
 import './product.css';
@@ -7,18 +6,11 @@ constructor(props) {
     super(props)
     console.log(this.props)
     this.state = {
-        mensProductDetailsDisplay:[],
-        womensProductDetailsDisplay:[],
-        kidsProductDetailsDisplay:[],
-       // checkOutItem:[]
-        // quantity :0
+        productDetailsDisplay:[]
     }
-
-
-
     }
 componentDidMount(){
-
+   //localStorage.clear()
     fetch('https://api.jsonbin.io/b/5ed5d72879382f568bd1797a',{
         headers : { 
           'Content-Type': 'application/json',
@@ -31,14 +23,24 @@ componentDidMount(){
       } )     
       .then(data =>{ 
       //console.log('success', data)
-      const mensProductDetailsDisplay = data ? data.section.Men:null;
-      const womensProductDetailsDisplay = data ? data.section.Women:null;
-      const kidsProductDetailsDisplay = data ? data.section.Kids:null
-        this.setState({
-            mensProductDetailsDisplay:mensProductDetailsDisplay,
-            womensProductDetailsDisplay:womensProductDetailsDisplay,
-            kidsProductDetailsDisplay:kidsProductDetailsDisplay
-        })
+      let productDetailsDisplay;
+      let params = this.props.match.params.category;
+      console.log(params)
+      if(params === "mens"){
+        productDetailsDisplay = data ? data.section.Men:null
+      }else if(params === "womens"){
+        productDetailsDisplay = data ? data.section.Women:null
+      }else if(params === "kids"){
+        productDetailsDisplay = data ? data.section.Kids:null
+      } else {
+        productDetailsDisplay ="No Details"
+      }
+     
+      console.log(data);
+      this.setState({
+        productDetailsDisplay:productDetailsDisplay
+    })
+        
 })
 }
 
@@ -62,47 +64,38 @@ addToCart = (items) => {
     //JSON.parse(localStorage.getItem('myMovie')||"[]");
    // localStorage.getItem('checkOutItem',items )
     const arrayProduct =  JSON.parse(oldproduct);
-    //console.log(arrayproduct);
-    arrayProduct.push(items);
+    const subtotals =items.quantity * items.price;
+   const addNewObjects = {
+    id:items.id,
+    title:items.title,
+    size:items.title,
+    quantity:items.quantity,
+    price:items.price,
+    inStock:items.instock,
+    imgUrl:items.imgUrl,
+    color:items.color,
+    brand:items.brand,
+    subtotals:subtotals
+   }
+    arrayProduct.push(addNewObjects);
+    console.log(arrayProduct);
     localStorage.setItem('checkOutItem', JSON.stringify(arrayProduct));    
     // this.setState( state => ({
     //     checkOutItem:[...state.checkOutItem, items]
     //  }))
-
-
-  //   console.log(arrayproduct)
+    this.props.cartCount(arrayProduct.length)
     this.props.history.push("/checkout"); 
-
-//    this.setState({
-//         checkOutItem:[{
-//             id:items.id,
-//             imgUrl:items.imgUrl,
-//             title:items.title,
-//             price:items.price
-//         }]
-        
-//     })
-//      let itemPush =[];
-//      for(let i=0; i < items.length; i++){
-//          itemPush.push(items);
-         
-//      }
-//      console.log(itemPush)
    }
 
 render(){
-   const {mensProductDetailsDisplay, womensProductDetailsDisplay,kidsProductDetailsDisplay,checkOutItem} = this.state;
+   const {productDetailsDisplay,checkOutItem} = this.state;
    const param = this.props.match.params.id;
    //console.log(checkOutItem)
   const paramConvert = parseInt(param)
-   const filteredKeys = mensProductDetailsDisplay.filter(items => items.id === paramConvert);
-   const filterWomen = womensProductDetailsDisplay.filter(items => items.id === paramConvert);
-   const filterKid = kidsProductDetailsDisplay.filter(items => items.id === paramConvert)  
+   const filteredKeys = productDetailsDisplay.filter(items => items.id === paramConvert);
     return(
         <div className="container">
-        
             <h3>  Product Details </h3>
-
         {
            filteredKeys.map((itemDetail, index) => 
                <div className="row" key ={index}>
@@ -130,71 +123,7 @@ render(){
               )
             
          } 
-
-         {
-           filterWomen.map((itemDetail, index) => 
-            <div className="row" key ={index}>
-            <div className="col-2 item-photo">
-            <img src= {itemDetail.imgUrl} border="0" width="150" height="200"/> 
-            </div>
-          
-           <div className="col-5">
-               <h2> {itemDetail.title} </h2>
-               <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                </p>
-               <h3> {itemDetail.size} </h3>
-               <h3> {itemDetail.color} </h3>
-               <h3> {itemDetail.brand} </h3>
-                <h3> {itemDetail.instock}</h3>
-                {/* <h3> <input type="number" 
-                      onInput = {(e)=> this.getQuantity(e)}
-                      onKeyUp = {(e)=> this.getQuantity(e)}/>  </h3>               
-               <h3> <b> INR </b> {itemDetail.price} </h3> */}
-       <button className="btn btn-danger" onClick={(e) => this.addToCart(itemDetail)}> Add To Cart  </button> 
-       </div>
-       </div>)
-              
-            
-         } 
-
-
-         {
-           filterKid.map((itemDetail, index) => 
-            <div className="row" key ={index}>
-            <div className="col-2 item-photo">
-            <img src= {itemDetail.imgUrl} border="0" width="150" height="200"/> 
-            </div>
-          
-           <div className="col-5">
-               <h2> {itemDetail.title} </h2>
-               <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                </p>
-               <h3> {itemDetail.size} </h3>
-               <h3> {itemDetail.color} </h3>
-               <h3> {itemDetail.brand} </h3>
-                <h3> {itemDetail.instock}</h3>
-                {/* <h3> <input type="number" 
-                      onInput = {(e)=> this.getQuantity(e)}
-                      onKeyUp = {(e)=> this.getQuantity(e)}/>  </h3> */}
-               <h3> <b> INR </b> {itemDetail.price} </h3>
-         <button className="btn btn-danger" onClick={(e) => this.addToCart(itemDetail)} > Add To Cart  </button> 
-       </div>
-       </div>
-              
-            )
-         } 	
-         <br/>
-         <div className ="row">
-        
-            </div>
-            	
          </div>
-         
-        
     )
 }
 

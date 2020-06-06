@@ -12,9 +12,7 @@ constructor(props) {
     super(props)
     this.state = {
         //showing: false,
-        mensData:[],
-        womensData:[],
-        kidsData:[],
+        productsCategoryDisplayed:[],
         allChecked:false,
         colors : [
             {id:1,color:'red', isChecked:false},
@@ -36,14 +34,21 @@ constructor(props) {
         })
         .then(response => response.json())
         .then(data => {  
-            const mensData = data ? data.filter.section.Men:null
-            const womensData = data ? data.filter.section.Women :null
-            const kidsData = data ? data.filter.section.Kids:null
-            console.log(data);
+            let productsCategoryDisplayed;
+            let params = this.props.match.params.category;
+            if(params === "mens"){
+                productsCategoryDisplayed = data ? data.filter.section.Men:null
+            }else if(params === "womens"){
+                productsCategoryDisplayed = data ? data.filter.section.Women:null
+            }else if(params === "kids"){
+                productsCategoryDisplayed = data ? data.filter.section.Kids:null
+            } else {
+                productsCategoryDisplayed ="No Category"
+            }
+           
+           // console.log(data);
             this.setState({
-                mensData:mensData,
-                womensData:womensData,
-                kidsData:kidsData
+                productsCategoryDisplayed:productsCategoryDisplayed
             })
             //this.props.sendItem(data)
            // console.log('success', data)
@@ -60,8 +65,10 @@ componentDidUpdate(){
 buttonClick = (e,item) => {
 e.preventDefault();
  const itemID = item.id;
- const url = "/productdetails"
- this.props.history.push(`${url}/${itemID}`);
+ const params = this.props.match.params.category;
+ //console.log(params)
+ const url = "productdetails"
+ this.props.history.push(`${params}/${url}/${itemID}`);
  //console.log(itemID)
  
 }
@@ -70,30 +77,42 @@ handleChange = evt =>
 let itemName = evt.target.name;
 console.log(itemName)
 let checked = evt.target.checked;
-console.log(checked)
+//console.log(checked)
 this.setState( prevState=> {
-    let {colors, allChecked} = prevState;
+    let {colors, allChecked, productsCategoryDisplayed} = prevState;
+  
     if(itemName=== "checkAll")
     {
         allChecked = checked;
-        colors = colors.map(coltype => ({...coltype, isChecked:checked}))
+        colors = colors.map(coltype => 
+        ({...coltype, isChecked:checked})
+     )
     } else {
 
    
-    colors = colors.map(coltype =>
+         colors = colors.map(coltype =>
+     
         coltype.color === itemName ? { ...coltype, isChecked: checked } : coltype
       );
-      allChecked = colors.every(coltype => coltype.isChecked)
+      allChecked = colors.every(coltype => coltype.isChecked);
     }
-    return {colors, allChecked}
-})
+
+    if(checked){
+        productsCategoryDisplayed = productsCategoryDisplayed.filter(items=> items.color=== itemName).
+        map(items=> ({...items}))
+    }else{
+        productsCategoryDisplayed = productsCategoryDisplayed.map(items=> ({...items}))
+    }
+
+    return {colors, allChecked,productsCategoryDisplayed}
+},)
 
   }
 render(){
 const params = this.props.match.params.category;
 //console.log(params);
 const categoryName = ['Mens','Womens','Kids']
-const { mensData , womensData, kidsData} = this.state;
+const { productsCategoryDisplayed } = this.state;
 return(
 
         <div className="container">
@@ -129,19 +148,6 @@ return(
               )}
                
               <hr/>
-              {/* <li>Size</li>
-              {size.map((index,size) => 
-              <ul key={index}>
-                  <li><label><input type="checkbox" name="size"/> {size}</label></li>
-                </ul>
-              )}
-              <hr/>
-              <li>Brand</li>
-              {brand.map((index,brand) => 
-              <ul key={index}>
-                  <li><label><input type="checkbox" name="size"/> {brand}</label></li>
-                </ul>
-              )} */}
             </ul>
         </div>
             
@@ -154,9 +160,8 @@ return(
                 }
                 </h2>
         
-        {         
-           params === "mens" ? 
-           mensData.map((item,index) =>
+        {        
+         productsCategoryDisplayed.map((item,index) =>
             <ul className="productInfo" key={index}>
                 <li> <img src= {item.imgUrl} border="0" width="150" height="200"/> </li>
                 <li className= "custom-style"> {item.title} </li>
@@ -166,44 +171,8 @@ return(
             <li> {item.instock}</li>
             <li className="red-color"> <b> INR </b> {item.price} </li>
             <button onClick={(e)=> {this.buttonClick(e,item)}} className="btn btn-danger btn-block" > View  </button> 
-                
-            </ul>
-            ): params === "womens" ? womensData.map((item,index) =>
-            <ul className="productInfo" key={index}>
-                <li> <img src= {item.imgUrl} border="0" width="150" height="200"/> </li>
-                <li className="custom-style"> {item.title} </li>
-                <li> {item.size} </li>
-                <li> {item.color} </li>
-                <li> {item.brand} </li>
-            <li> {item.instock}</li>
-            <li className="red-color"> <b> INR </b> {item.price} </li>
-                <button onClick={(e)=> {this.buttonClick(e,item)}} className="btn btn-danger btn-block" > View  </button> 
-            </ul>
-            ): params === "kids" ? kidsData.map((item,index) =>
-            <ul className="productInfo" key={index}>
-                <li> <img src= {item.imgUrl} border="0" width="150" height="200"/> </li>
-                <li className="custom-style"> {item.title} </li>
-                <li> {item.size} </li>
-                <li> {item.color} </li>
-                <li> {item.brand} </li>
-            <li> {item.instock}</li>
-            <li className="red-color"> <b> INR </b> {item.price} </li>
-                <button onClick={(e)=> {this.buttonClick(e,item)}}  className="btn btn-danger btn-block" > View  </button> 
-            </ul>
-            ) : "No category"
-        }
-
-
-
-            
-
-
-            {/* <div style={{ display: showing ? "none" : "block" }}> 
-            {params === "mens" ? mensCategory: params === "womens" ? womensCategory : params=== "kids" ? kidsCategory : "No category"} 
-            
-            
-            </div> */}
-            {/* <div style={{ display: showing ? "block" : "none" }}> </div> */}
+            </ul>)
+            }          
                         
              </div>
         </div> 

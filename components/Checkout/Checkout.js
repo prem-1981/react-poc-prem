@@ -7,7 +7,8 @@ class Checkout extends React.Component {
 constructor(props){
 super(props)
 this.state = {
-   productCart:[]
+   productCart:[],
+   totalArray:[]
     }
     
 }
@@ -17,9 +18,15 @@ componentDidMount(){
    const products = JSON.parse(localStorage.getItem('checkOutItem'));
    //JSON.parse(localStorage.getItem('checkOutItem'))
    //localStorage.setItem('checkOutItem', JSON.stringify(checkOutItem));
- //  console.log(products);
-   this.setState({productCart:products})
- 
+  console.log(products);
+  const sum = products ? products.reduce((prevValue, currentValue) =>
+  prevValue + currentValue.subtotals,0) : null;
+  console.log(sum);
+//   const avg = sum ? sum * this.state.productCart.length:null
+// console.log(avg)
+   this.setState({productCart:products,
+    totalArray:sum
+})
 
 }
 componentDidUpdate(nextState, index){
@@ -39,48 +46,75 @@ this.props.history.push("/cart");
 getQuantity = (e,items) => {
     const itemQuantity = e.target.value 
     items.quantity = itemQuantity;
-    const subtotals = items.quantity * items.price;
    // console.log(subtotals)
-    let productCartCopy = JSON.parse(JSON.stringify(this.state.productCart))
+    let productCartCopy = this.state.productCart;
    //make changes to ingredients
-  // console.log(subtotals)
-   productCartCopy[0].subtotals = subtotals//whatever new
-   localStorage.setItem('checkOutItem', JSON.stringify(productCartCopy));
    console.log(productCartCopy)
+   productCartCopy.forEach(item=>{
+    const subtotals = item.quantity * item.price;
+    item.subtotals = subtotals
+   })
+
+   const sum = productCartCopy ? productCartCopy.reduce((prevValue, currentValue) =>
+  prevValue + currentValue.subtotals,0) : null;
+  console.log(sum);
+
+   //whatever new
+   localStorage.setItem('checkOutItem', JSON.stringify(productCartCopy));
+   //console.log(productCartCopy)
    this.setState({
-      productCart:productCartCopy 
+      productCart:productCartCopy,
+      totalArray:sum
     }, () => {
       // console.log(this.state.productCart);
       }) 
-
-
-
-
     }
 
 removeItem = (index)=> {
     let  productArray = this.state ? this.state.productCart :null
     productArray.splice(index,1);
     localStorage.setItem('checkOutItem', JSON.stringify(productArray));
-    this.props.cartCount(productArray.length)
+    this.props.cartCount(productArray.length);
+    const sum = productArray ? productArray.reduce((prevValue, currentValue) =>
+    prevValue + currentValue.subtotals,0) : null;
+    console.log(sum);
     //localStorage.setItem('checkOutItem', JSON.stringify('checkOutItem'))
-    this.setState({productCart:productArray})
+    this.setState({productCart:productArray,
+        totalArray:sum
+    
+    })
   }
 
 render(){
-    const {quantity, subtotals, productCart} = this.state;
+    const {quantity, subtotals,totalArray, productCart} = this.state;
 //     const checkOutData = localStorage.getItem('checkOutItem')
 //     const gettingObj = JSON.parse(checkOutData);
 //   //  console.log(gettingObj)
+
+// const sum = productCart ? productCart.reduce((currentValue, index) =>{
+//     if( index !== undefined ){
+//         console.log(currentValue,index)
+//     }else{
+//         console.log("failed")
+//     }
    
-const sum = productCart ? productCart.reduce((index, items) => {
- return items ? items.subtotals : null
-}, 0) : null;
+//     }, 0) : null
+    
+// const avg = sum ? sum * productCart.length:null
+// console.log(avg)    
+//  this.setState({subtotalsArray:avg})
 
-console.log(sum)
+// const totalCount = productCart.reduce((index,currentValue)=>{
+//  const subtotals = currentValue.subtotals;
+//  const producNet = index[subtotals] ? index[subtotals] + 1 : 1;
+//  return {
+//      ...index,
+//      [subtotals]:producNet
+//  }},{})
 
-const avg = sum ? sum * productCart.length:null
-console.log(avg)
+//  console.log(totalCount)
+
+
 
      return (
      
@@ -97,10 +131,9 @@ console.log(avg)
 
              </tr>
          </thead>
-
          { productCart ? productCart.map((items,index) => (
-         <tbody>
-         <tr  key={index}>
+         <tbody key={index}>
+         <tr  >
          <td> <img src= {items.imgUrl} border="0" width="50" height="70"/> </td>
          <td> {items.title} </td>
          <td> <input type="value" value={items.quantity}
@@ -129,7 +162,18 @@ console.log(avg)
                       <h5> <span className="net">    Net Total  </span> </h5>
                 </td>
                 <td>
-                <span className="net"> INR </span>  <h3>  <span className="amount">   {avg}  </span> </h3> 
+                <span className="net"> INR </span>  <h3>  <span className="amount">   
+                
+                {/* {
+                    productCart ? productCart.reduce((index,currentValue) =>
+                    currentValue.subtotals * productCart.length , 0) : null
+
+   
+                } */}
+                        {totalArray}
+
+
+                  </span> </h3> 
                 </td>
              
              </tr>
