@@ -12,8 +12,10 @@ import LandingPage from './components/LandingPage/LandingPage';
 import ProductList from './components/Products/ProductList';
 import Logout from './components/Login/Logout'
 import ProductDetails from './components/Products/ProductDetails';
+import ProtectedRoute from './components/ProtectedRoute';
+import Unauthorized from './components/Unauthorized';
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import './App.css'
+import './App.css'
 import Checkout from './components/Checkout/Checkout';
 import Cart from './components/Checkout/Cart'
 class App extends React.Component {
@@ -87,7 +89,7 @@ componentDidMount(){
         <NavLink to="/landing" className="nav-link" > Home </NavLink> 
       </li>
       <li className="nav-item ">
-        <NavLink to="/productlist/mens" className="nav-link" > Mens </NavLink> 
+        <NavLink to="/productlist/mens"  className="nav-link" > Mens </NavLink> 
       </li>
       <li className="nav-item ">
         <NavLink to="/productlist/womens" className="nav-link" > Womens </NavLink> 
@@ -155,13 +157,17 @@ componentDidMount(){
               )}
             />
           
-          { <Route exact   path={"/productdetails/:id"}   
+          { <Route exact   path={"/productlist/:category/productdetails/:id"}   
           render={props => (
           <ProductDetails cartCount={this.cartCount}  {...props}  />
           )} /> }
 
 
-          
+            {/* <ProtectedRoute exact path='/landing'
+            render={props => (
+              <LandingPage user={this.state.user.toString()}    {...props} 
+              />
+            )} /> */}
 
              { <Route exact   path={"/checkout"}   
           render={props => (
@@ -173,6 +179,9 @@ componentDidMount(){
           <Cart user={user.toString()}  {...props}  />
           )} /> }
 
+
+
+            <Route exact path='/unauthorized' component={Unauthorized} />
 
         </Switch>
       </div>
