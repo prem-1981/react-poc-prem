@@ -5,32 +5,33 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import Caraousel from '../../hoc/Caraousel'
 import './landing.css'
 class List extends React.Component{
   constructor(props){
     super(props)
+    console.log(this.props)
   }
 
+
+componentDidMount() {
+  //localStorage.clear()
+  // const localStorageItems = localStorage ? localStorage.getItem('userCredentials'):null
+  // const userStatus = localStorageItems ? (localStorageItems.user === "true") :null
+  // localStorage.setItem('userCredentials', userStatus);   
+}
 
 render() {
   
   return(
-     <div className="container-fluid landing">
-      <div className="container">
+     <div className="container-fluid">
         <div className="row">
-            <div className="col-5"> 
-            <br/>
-            <br/>        
-        <h1>Welcome to V-MART</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore</p>
-<p> &nbsp;</p>
-<h3> Let's Shop and Enjoy </h3>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore</p>
-          </div>
+
+        <Caraousel/>
+
+            {/* <img className="img-fluid" border="0" src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2020/6/8/d45b6b5b-3118-46e7-a712-085847da85561591629760923-Wrogn_Desk_Banner.jpg"/>  */}
         </div> 
-    </div>
+    
     <br/>
     <br/>
     
