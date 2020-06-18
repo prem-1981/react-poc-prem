@@ -50,10 +50,12 @@ handleSubmit = (e)=> {
   .then(data =>{ 
   console.log('success', data)
   if(username === data.username && password === data.password){
-    this.props.handleLogin();
+    this.props.handleLogin(data.username);
+    localStorage.setItem('username', this.state.username)
+    localStorage.setItem('user', this.props.user)
       setTimeout(() => {
         this.props.history.push("/landing");
-      }, 3000);
+      }, 1500);
    
   }else{
     
@@ -79,7 +81,6 @@ render() {
           <div className="col-5">
           <br/>
           <br/>
-         
         <h1>Fashion friday</h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
 incididunt ut labore et dolore</p>
@@ -87,7 +88,7 @@ incididunt ut labore et dolore</p>
             <div className="card card-signin my-5">
               <div className="card-body">
                 <h5 className="card-title text-center">Sign In</h5>
-                <h4> ===> LoggedIn Status {this.props.user} </h4>
+                user/pwd -  Shop123
                <p className="has-error"> {this.state.errorMessages} </p>
               
                 <form className="form-signin" name="form">
