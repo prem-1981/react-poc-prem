@@ -11,7 +11,8 @@ this.state = {
         pincode:"560043, Karnataka",
         mobile:"9980429832",
     },
-    checkCart:[]
+    checkCart:[],
+    totalArray:[]
 }
     
 }
@@ -19,17 +20,18 @@ this.state = {
 componentDidMount(){
     // localStorage.clear()
     const products = JSON.parse(localStorage.getItem('checkOutItem'));
-    console.log(products);
-    this.setState({checkCart:products}   )
+    const sum = products ? products.reduce((prevValue, currentValue) =>
+    prevValue + currentValue.subtotals,0) : null;
+    console.log(sum);
+    this.setState({checkCart:products,
+        totalArray:sum
+
+    }   )
 }
 
    
 render(){
-    const {checkCart} = this.state
-    const sum = checkCart.reduce((index, items) => {
-        return items.price * items.quantity
-       }, 0);
-     const avg = sum *checkCart.length
+    const {checkCart,totalArray} = this.state
 
    
     return (
@@ -78,15 +80,14 @@ render(){
         <tfoot>
                     <tr>
                     <td colSpan="2" align="right"> 
-                               
+                            
                              </td>
-                    <td colSpan="3" align="right">  Total Payment <span className="net"> INR </span>  <h3>  <span className="amount">   {avg}  </span> </h3>  <button className="btn btn-primary">
+                    <td colSpan="3" align="right">  Total Payment 
+                    <span className="net"> INR </span>   <h3>  
+                    <span className="amount">  {totalArray} </span> </h3> 
+                     <button className="btn btn-primary">
                                 Make Payment 
                             </button>  </td>
-
-                    
-
-                        
                     </tr>
                 </tfoot>
        </table>

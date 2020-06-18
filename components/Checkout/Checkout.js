@@ -16,14 +16,9 @@ this.state = {
 componentDidMount(){
   //localStorage.clear()
    const products = JSON.parse(localStorage.getItem('checkOutItem'));
-   //JSON.parse(localStorage.getItem('checkOutItem'))
-   //localStorage.setItem('checkOutItem', JSON.stringify(checkOutItem));
   console.log(products);
   const sum = products ? products.reduce((prevValue, currentValue) =>
   prevValue + currentValue.subtotals,0) : null;
-  console.log(sum);
-//   const avg = sum ? sum * this.state.productCart.length:null
-// console.log(avg)
    this.setState({productCart:products,
     totalArray:sum
 })
@@ -38,17 +33,13 @@ return true
 }
 
 getLocalItems = (e) =>{
-// const cartItemDetails = localStorage.setItem('cartItem', JSON.stringify(quantotal));
 this.props.history.push("/cart");
-// //const cartItemDetail = localStorage.getItem(JSON.parse(cartItemDetails))
 }
 
 getQuantity = (e,items) => {
     const itemQuantity = e.target.value 
     items.quantity = itemQuantity;
-   // console.log(subtotals)
     let productCartCopy = this.state.productCart;
-   //make changes to ingredients
    console.log(productCartCopy)
    productCartCopy.forEach(item=>{
     const subtotals = item.quantity * item.price;
@@ -57,11 +48,10 @@ getQuantity = (e,items) => {
 
    const sum = productCartCopy ? productCartCopy.reduce((prevValue, currentValue) =>
   prevValue + currentValue.subtotals,0) : null;
-  console.log(sum);
 
-   //whatever new
+
    localStorage.setItem('checkOutItem', JSON.stringify(productCartCopy));
-   //console.log(productCartCopy)
+
    this.setState({
       productCart:productCartCopy,
       totalArray:sum
@@ -87,39 +77,9 @@ removeItem = (index)=> {
 
 render(){
     const {quantity, subtotals,totalArray, productCart} = this.state;
-//     const checkOutData = localStorage.getItem('checkOutItem')
-//     const gettingObj = JSON.parse(checkOutData);
-//   //  console.log(gettingObj)
-
-// const sum = productCart ? productCart.reduce((currentValue, index) =>{
-//     if( index !== undefined ){
-//         console.log(currentValue,index)
-//     }else{
-//         console.log("failed")
-//     }
-   
-//     }, 0) : null
-    
-// const avg = sum ? sum * productCart.length:null
-// console.log(avg)    
-//  this.setState({subtotalsArray:avg})
-
-// const totalCount = productCart.reduce((index,currentValue)=>{
-//  const subtotals = currentValue.subtotals;
-//  const producNet = index[subtotals] ? index[subtotals] + 1 : 1;
-//  return {
-//      ...index,
-//      [subtotals]:producNet
-//  }},{})
-
-//  console.log(totalCount)
-
-
-
      return (
-     
         <div className="container">
-        <table    className="table table-hover table-condensed" >
+        <table  className="table table-hover table-condensed" >
          <thead>
              <tr>
                  <th> Product </th>
@@ -152,9 +112,11 @@ render(){
                   <Link to ='/landing' className="btn btn-warning"><i className="fa fa-angle-left"></i> Continue Shopping</Link>
                     </td>
                 <td colSpan="2">
-                <button  
-                                onClick = {(e) => {this.getLocalItems(e)}}
-                                className="btn btn-success btn-block">Checkout </button>
+                
+                {this.props.user ?
+                     <button onClick = {(e) => {this.getLocalItems(e)}}
+                                className="btn btn-success btn-block">Checkout
+                          </button>  :  "Please Login to contineue the check" } 
                 </td>
                 <td> 
                                                
@@ -163,16 +125,7 @@ render(){
                 </td>
                 <td>
                 <span className="net"> INR </span>  <h3>  <span className="amount">   
-                
-                {/* {
-                    productCart ? productCart.reduce((index,currentValue) =>
-                    currentValue.subtotals * productCart.length , 0) : null
-
-   
-                } */}
                         {totalArray}
-
-
                   </span> </h3> 
                 </td>
              
