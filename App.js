@@ -13,9 +13,9 @@ import ProductList from './components/Products/ProductList';
 import Logout from './components/Login/Logout'
 import ProductDetails from './components/Products/ProductDetails';
 import ProtectedRoute from './components/ProtectedRoute';
-import Unauthorized from './components/Unauthorized';
+// import Unauthorized from './components/Unauthorized';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'
+// import './App.css'
 import Checkout from './components/Checkout/Checkout';
 import Cart from './components/Checkout/Cart'
 class App extends React.Component {
@@ -181,7 +181,7 @@ componentDidMount(){
 
 
 
-            <Route exact path='/unauthorized' component={Unauthorized} />
+     
 
         </Switch>
       </div>
