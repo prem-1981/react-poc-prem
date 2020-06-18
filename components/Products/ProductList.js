@@ -22,8 +22,9 @@ constructor(props) {
      
     }
 }
-    componentDidMount(){
-        fetch( "https://api.jsonbin.io/b/5ed1de0760775a568584ab42",{
+
+getDisplayedList(){
+    fetch( "https://api.jsonbin.io/b/5ed1de0760775a568584ab42",{
           method:'GET',
           headers : { 
             'Content-Type': 'application/json',
@@ -53,14 +54,17 @@ constructor(props) {
             //this.props.sendItem(data)
            // console.log('success', data)
         })
-       }
-
-componentDidUpdate(){
-    //console.log(prevState);
-    //console.log(prevProps)
-
 }
-
+componentDidMount(){
+      this.getDisplayedList()
+ }
+componentWillReceiveProps(){
+    console.log(this.props)
+    const newParams = this.props.match.params.category;
+    if(newParams){
+        this.getDisplayedList()
+    } 
+}
 
 buttonClick = (e,item) => {
 e.preventDefault();
@@ -80,7 +84,6 @@ let checked = evt.target.checked;
 //console.log(checked)
 this.setState( prevState=> {
     let {colors, allChecked, productsCategoryDisplayed} = prevState;
-  
     if(itemName=== "checkAll")
     {
         allChecked = checked;
@@ -89,9 +92,7 @@ this.setState( prevState=> {
      )
     } else {
 
-   
          colors = colors.map(coltype =>
-     
         coltype.color === itemName ? { ...coltype, isChecked: checked } : coltype
       );
       allChecked = colors.every(coltype => coltype.isChecked);

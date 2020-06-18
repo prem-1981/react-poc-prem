@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import React from 'react';
 import {render} from 'react-dom';
 import './product.css';
@@ -112,6 +113,7 @@ render(){
                     <h3> {itemDetail.size} </h3>
                     <h3> {itemDetail.color} </h3>
                     <h3> {itemDetail.brand} </h3>
+                    INR <h3>   {itemDetail.price} </h3>
                      <h3> {itemDetail.instock}</h3>
                      {/* <h3> <input type="number" 
                       onInput = {(e)=> this.getQuantity(e)}
